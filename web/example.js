@@ -1,72 +1,57 @@
 import { app } from "../../scripts/app.js";
 
-class DatasetInputWidget {
-    constructor(node, index) {
-        this.node = node
-        this.index = index
-        this.id = `dataset_${index + 1}`
+const getAction = (node, v) => {
+    const currentInputs = node.inputs.length
+    if (v > currentInputs) {
+        return "add"
     }
-    build() {
-        this.input = this.node.addInput(this.id, "KHXL_CF_DATASET")
-    }
-    remove() {
-        const index = this.node.findInputSlot(this.id)
-        this.node.removeInput(index)
-    }
-    callback(value) {
-        this.input.value = value
+    if (v < currentInputs) {
+        return "remove"
     }
 }
 
-class DatasetCountWidget {
-    widgets = []
-
-    constructor(node, oldval = 1) {
-        this.node = node
-        this.value = oldval
-        this.widget = this.node.addWidget("number",
-            "dataset_count",
-            this.value, (v) =>this.callback(v, this.value), {
-                step: 10,
-                default: 1,
-                round: 1,
-                precision: 0,
-                min: 1,
-                max: 1000000
-            }
-        )
-        this.callback(1)
-    }
-    callback(newval) {
-        const existingWidgets = this.widgets.length
-        const isIncreased = newval > existingWidgets
-        const toAdd = isIncreased ? newval - existingWidgets : 0
-        if(toAdd) {
-            const newItems = Array.from({length: toAdd}, (_, i) => new DatasetInputWidget(this.node, i + existingWidgets))
-            newItems.forEach(item => item.build())
-            this.widgets.push(...newItems)
-        }
-
-        const isDecreased = newval < existingWidgets
-        const toRemove = isDecreased ? existingWidgets - newval : 0
-        if(toRemove) {
-            const removedItems = this.widgets.slice(-toRemove)
-            removedItems.forEach(item => item.remove())
-            this.widgets = this.widgets.slice(0, -toRemove)
-        }
-        console.log(this.widgets)
-        this.value = newval
+class AppManager {
+    datasetCountWidgets = []
+    constructor(){
+        const self = this
+        app.registerExtension({
+            name: "a.unique.name.for.a.useless.extension",
+            async nodeCreated(node) {
+                if(node.title === "Dataset Loader Node") {
+                    const [countWidget] = node.widgets
+                    countWidget.callback = (v) => {
+                        const currentInputs = node.inputs.length
+                        const diff = Math.abs(v - currentInputs)
+                        const action = getAction(node, v)
+                        for (let i = 0; i < diff; i++) {
+                            if(action === "add") {
+                                node.addInput(`dataset-config-${i + 1 + currentInputs}`, "KHXL_CF_DATASET")
+                            }
+                            if(action === "remove") {
+                                node.removeInput(-1)
+                            }
+                        }
+                    }
+                } else if (node.title === "DreamBooth Dataset Config Node") {
+                    const countWidget = node.widgets.find(widget => widget.name === "dream_booth_subset_count")
+                    console.log(countWidget)
+                    countWidget.callback = (v) => {
+                        const currentInputs = node.inputs.length
+                        const diff = Math.abs(v - currentInputs)
+                        const action = getAction(node, v)
+                        for (let i = 0; i < diff; i++) {
+                            if(action === "add") {
+                                node.addInput(`dream-booth-subset-config-${i + 1 + currentInputs}`, "KHXL_CF_DREAMBOOTH_SUBSET_CONFIG")
+                            }
+                            if(action === "remove") {
+                                node.removeInput(-1)
+                            }
+                        }
+                    }
+                }
+            },
+        })
     }
 }
-app.registerExtension({
-	name: "a.unique.name.for.a.useless.extension",
-	async setup() {
-		alert("Setup complete!")
-	},
-    async nodeCreated(node) {
-        console.log(node)
-        if(node.title === "Dataset Loader Node") {
-            new DatasetCountWidget(node)
-        }
-    }
-})
+
+new AppManager()

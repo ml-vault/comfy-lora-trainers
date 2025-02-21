@@ -1,7 +1,7 @@
 import os
-from ..const import TRAIN_CONFIG_TYPE, TrainConfigDict
+from ..const import TRAIN_CONFIG_TYPE, TrainConfigDict, OPTIMIZER_CONFIG_TYPE
 
-PRECISIONS = ["fp16", "bf16"]
+PRECISIONS = ["fp16", "bf16", "no"]
 
 class TrainConfigNode:
 
@@ -53,6 +53,10 @@ class TrainConfigNode:
                 }),
             },
             "optional": {
+                "optimizer": (OPTIMIZER_CONFIG_TYPE, {
+                    "default": {"optimizer_type": "AdamW"},
+                    "tooltip": "Optimizer"
+                }),
                 "max_train_epochs": ("INT", {
                     "default": 1,
                     "tooltip": "Max train epochs"
@@ -79,7 +83,7 @@ class TrainConfigNode:
         return (TrainConfigDict(
             pretrained_model_name_or_path=checkpoint,
             network_weights=lora or None,
-            xformers=xformers,
+            xformers=xformers if xformers else None,
             mixed_precision=mixed_precision,
             save_precision=save_precision,
             learning_rate=learning_rate,

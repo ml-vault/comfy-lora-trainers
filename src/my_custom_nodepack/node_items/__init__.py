@@ -5,7 +5,8 @@ from .train_config_node import TrainConfigNode
 from .sampler_config_node import SamplerConfigNode
 from .dataset_loader_node import DatasetLoaderNode
 from .output_config_node import OutputConfigNode
-from .dataset_node import DatasetNode
+from .dreambooth_dataset_config_node import DreamBoothDatasetConfigNode
+from .dreambooth_subset_config_node import DreamBoothSubsetConfigNode
 
 __all__ = [
     DataPackLoaderNode,
@@ -15,5 +16,6 @@ __all__ = [
     SamplerConfigNode,
     OutputConfigNode,
     DatasetLoaderNode,
-    DatasetNode
+    DreamBoothDatasetConfigNode,
+    DreamBoothSubsetConfigNode
 ]

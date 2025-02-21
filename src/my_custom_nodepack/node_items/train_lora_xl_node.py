@@ -1,7 +1,9 @@
+import argparse
+from library.train_util import read_config_from_file
 from ..train_lora_xl import SdxlNetworkTrainer
 from ..const import SAMPLER_CONFIG_TYPE, TRAIN_CONFIG_TYPE, OUTPUT_CONFIG_TYPE, DATASET_LOADER_TYPE, DatasetLoaderDict, TrainConfigDict
 from ..args import ClassfiedArgs
-
+from ..args import setup_parser_sdxl
 
 PRECISIONS = ["fp16", "bf16"]
 
@@ -43,11 +45,16 @@ class TrainLoraXlNode:
                      ):
         args = ClassfiedArgs(
             **train_config,
+            network_module="networks.lora",
+            dataset_config=dataset['dataset_config']
         )
-        print(f"dataset: {dataset}")
-        print(f"train_config: {train_config}")
-        print(f"sampler_config: {sampler_config}")
-        print(f"output_config: {output_config}")
+        parser = setup_parser_sdxl()
+        args = read_config_from_file(args, parser)
+        print(f"args: {args}")
+        # print(f"dataset: {dataset}")
+        # print(f"train_config: {train_config}")
+        # print(f"sampler_config: {sampler_config}")
+        # print(f"output_config: {output_config}")
         trainer = SdxlNetworkTrainer()
         trainer.train(args)
         # set_auth_config(r_token=huggingface_token, w_token=huggingface_token)

@@ -39,15 +39,18 @@ class ImageExporterNode:
                     "default": "filter",
                     "tooltip": "Filters to tag with split by comma"
                 }),
+                "exclude_filters": ("STRING", {
+                    "default": "exclude_filter",
+                    "tooltip": "Filters to exclude split by comma"
+                }),
             }
         }
 
-
-
-    def export_image(self, dataset: DatapackRepoInfo, export_path: str, filters: str | None):
+    def export_image(self, dataset: DatapackRepoInfo, export_path: str, filters: str | None, exclude_filters: str | None):
         set_auth_config(r_token=dataset["auth_token"], w_token=dataset["auth_token"])
         dataset = load_dataset_for_dpack(dataset["dataset_repo_id"])
-        filters = filters.split(",") if filters else None
-        export_datataset_by_filters(dataset, export_path, filters)
+        filters = [f.strip() for f in filters.split(",")] if filters else None
+        exclude_filters = [f.strip() for f in exclude_filters.split(",")] if exclude_filters else None
+        export_datataset_by_filters(dataset, export_path, filters, exclude_filters)
         return (export_path, )
 

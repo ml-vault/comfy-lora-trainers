@@ -57,7 +57,8 @@ class TrainLoraXlNode:
         # print(f"train_config: {train_config}")
         # print(f"sampler_config: {sampler_config}")
         # print(f"output_config: {output_config}")
-        with Accelerator() as accelerator:
+        accelerator = Accelerator()
+        with accelerator:
             trainer = SdxlNetworkTrainer()
             trainer.train(args)
         # set_auth_config(r_token=huggingface_token, w_token=huggingface_token)

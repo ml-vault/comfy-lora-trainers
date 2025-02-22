@@ -7,9 +7,15 @@ from .node_items import (
     OutputConfigNode,
     DatasetLoaderNode,
     DreamBoothDatasetConfigNode,
-    DreamBoothSubsetConfigNode
+    DreamBoothSubsetConfigNode,
+
 )
-from .node_items.optimizers import AdamOptimizerNode, AdamW8BitOptimizerNode
+from .node_items.optimizers import (
+    AdamOptimizerNode,
+    AdamW8BitOptimizerNode,
+    ProdigyOptimizerNode,
+    AdaFactorOptimizerNode,
+)
 
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique
@@ -25,6 +31,8 @@ NODE_CLASS_MAPPINGS = {
     "DreamBoothSubsetConfigNode": DreamBoothSubsetConfigNode,
     "AdamOptimizerNode": AdamOptimizerNode,
     "AdamW8BitOptimizerNode": AdamW8BitOptimizerNode,
+    "ProdigyOptimizerNode": ProdigyOptimizerNode,
+    "AdaFactorOptimizerNode": AdaFactorOptimizerNode,
 }
 
 # A dictionary that contains the friendly/humanly readable titles for the nodes
@@ -40,4 +48,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DreamBoothSubsetConfigNode": "DreamBooth Subset Config Node",
     "AdamOptimizerNode": "Adam Optimizer Node",
     "AdamW8BitOptimizerNode": "AdamW8Bit Optimizer Node",
+    "ProdigyOptimizerNode": "Prodigy Optimizer Node",
+    "AdaFactorOptimizerNode": "AdaFactor Optimizer Node",
 }

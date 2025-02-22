@@ -59,3 +59,12 @@ class DatasetLoaderDict(TypedDict):
     dataset_config: str
 
 OPTIMIZER_CONFIG_TYPE = NODE_PREFIX + "OPTIMIZER_CONFIG"
+
+class OutputConfigDict(TypedDict):
+    save_every_n_epochs: int
+    save_every_n_steps: int
+    save_model_as: str
+    output_dir: str
+    output_name: str
+    save_last_n_epochs: int | None
+    save_last_n_steps: int | None

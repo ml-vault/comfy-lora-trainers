@@ -10,7 +10,7 @@ __author__ = """test_node_py"""
 __email__ = "laptise@live.jp"
 __version__ = "0.0.1"
 
-from .src.my_custom_nodepack.nodes import NODE_CLASS_MAPPINGS
-from .src.my_custom_nodepack.nodes import NODE_DISPLAY_NAME_MAPPINGS
+from .src.comfy_kohya_trainers.nodes import NODE_CLASS_MAPPINGS
+from .src.comfy_kohya_trainers.nodes import NODE_DISPLAY_NAME_MAPPINGS
 
 WEB_DIRECTORY = "./web"

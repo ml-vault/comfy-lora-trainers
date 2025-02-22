@@ -3,7 +3,7 @@ requires = ["setuptools>=70.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my_custom_nodepack"
+name = "comfy_kohya_trainers"
 version = "0.0.1"
 description = "A collection of custom nodes for ComfyUI"
 authors = [

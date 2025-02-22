@@ -15,7 +15,7 @@ class ImageExporterNode:
     DESCRIPTION = "Export an image to a huggingface repo"
     FUNCTION = "export_image"
 
-    #OUTPUT_NODE = False
+    OUTPUT_NODE = True
     #OUTPUT_TOOLTIPS = ("",) # Tooltips for the output node
 
     CATEGORY = "Example"

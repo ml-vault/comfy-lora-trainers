@@ -34,6 +34,7 @@ class TrainLoraXlNode:
     RETURN_NAMES = ("dataset", "sample_image")
     DESCRIPTION = "Train LoRA XL Node"
     FUNCTION = "train_lora_xl"
+    OUTPUT_NODE = True
 
     CATEGORY = "Example"
 

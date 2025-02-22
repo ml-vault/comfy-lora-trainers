@@ -1,4 +1,5 @@
 from ...const import OPTIMIZER_CONFIG_TYPE
+from .opt_args import get_optimizer_args
 
 
 class ProdigyOptimizerNode:
@@ -13,29 +14,21 @@ class ProdigyOptimizerNode:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "lr": ("FLOAT", {
-                    "tooltip": "Learning rate adjustment parameter. Increases or decreases the Prodigy learning rate.",
-                    "default": 1.0,
-                    "min": 0.0,
-                    "max": 1.0,
-                    "step": 0.000001,
-                    "precision": 8
-                }),
                 "eps": ("FLOAT", {
                     "tooltip": "Term added to the denominator outside of the root operation to improve numerical stability.",
                     "default": 1e-8,
                     "min": 0.0,
                     "max": 1.0,
-                    "step": 0.0001,
-                    "precision": 6,
+                    "step": 0.0000001,
+                    "precision": 8,
                 }),
                 "weight_decay": ("FLOAT", {
                     "tooltip": "Weight decay, i.e. a L2 penalty",
                     "default": 0.0,
                     "min": 0.0,
                     "max": 1.0,
-                    "step": 0.0001,
-                    "precision": 6,
+                    "step": 0.01,
+                    "precision": 9,
                 }),
                 "decouple": ("BOOLEAN", {
                     "tooltip": "Use AdamW style decoupled weight decay",
@@ -52,13 +45,16 @@ class ProdigyOptimizerNode:
             },
         }
 
-    def get_optimizer(self, lr, eps, weight_decay, decouple, use_bias_correction, safeguard_warmup):
-        return ({
-            "optimizer_type": "Prodigy",
-            "lr": lr,
+    def get_optimizer(self, eps, weight_decay, decouple, use_bias_correction, safeguard_warmup):
+        args = get_optimizer_args({
             "eps": eps,
             "weight_decay": weight_decay,
             "decouple": decouple,
             "use_bias_correction": use_bias_correction,
             "safeguard_warmup": safeguard_warmup,
+        })
+
+        return ({
+            "optimizer_type": "Prodigy",
+            **args,
         },)

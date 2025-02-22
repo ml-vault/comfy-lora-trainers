@@ -1,4 +1,5 @@
 from ...const import OPTIMIZER_CONFIG_TYPE
+from .opt_args import get_optimizer_args
 
 class AdaFactorOptimizerNode:
     RETURN_TYPES = (OPTIMIZER_CONFIG_TYPE,)
@@ -12,10 +13,6 @@ class AdaFactorOptimizerNode:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "lr": ("FLOAT", {
-                    "tooltip": "The external learning rate.",
-                    "default": 0.0001,
-                }),
                 "eps": ("FLOAT", {
                     "tooltip": "Regularization constants for square gradient and parameter scale respectively",
                     "default": 1e-30,
@@ -51,10 +48,8 @@ class AdaFactorOptimizerNode:
             },
         }
 
-    def get_optimizer(self, lr, eps, clip_threshold, decay_rate, beta1, weight_decay, scale_parameter, relative_step, warmup_init):
-        return ({
-            "optimizer_type": "AdaFactor",
-            "lr": lr,
+    def get_optimizer(self, eps, clip_threshold, decay_rate, beta1, weight_decay, scale_parameter, relative_step, warmup_init):
+        args = {
             "eps": eps,
             "clip_threshold": clip_threshold,
             "decay_rate": decay_rate,
@@ -63,4 +58,9 @@ class AdaFactorOptimizerNode:
             "scale_parameter": scale_parameter,
             "relative_step": relative_step,
             "warmup_init": warmup_init,
+        }
+        args = get_optimizer_args(args)
+        return ({
+            "optimizer_type": "AdaFactor",
+            **args,
         },)

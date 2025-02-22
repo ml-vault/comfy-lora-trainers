@@ -51,6 +51,10 @@ class TrainConfigNode:
                     "default": 1.0,
                     "tooltip": "Prior loss weight"
                 }),
+                "cache_latents": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "Cache latents"
+                }),
             },
             "optional": {
                 "optimizer": (OPTIMIZER_CONFIG_TYPE, {
@@ -78,7 +82,9 @@ class TrainConfigNode:
               train_batch_size: int,
               prior_loss_weight: float,
               max_train_epochs: int,
-              max_train_steps: int
+              max_train_steps: int,
+              cache_latents: bool,
+              optimizer,
             ):
         return (TrainConfigDict(
             pretrained_model_name_or_path=checkpoint,
@@ -91,6 +97,8 @@ class TrainConfigNode:
             prior_loss_weight=prior_loss_weight,
             max_train_epochs=max_train_epochs,
             max_train_steps=max_train_steps,
+            cache_latents=cache_latents,
+            **optimizer,
         ),)
 
 

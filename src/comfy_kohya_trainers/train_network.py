@@ -21,7 +21,7 @@ from accelerate.utils import set_seed
 from diffusers.schedulers.scheduling_ddpm import DDPMScheduler
 from library import deepspeed_utils, model_util
 
-import library.train_util as train_util
+from . import train_util
 from library.train_util import DreamBoothDataset
 import library.config_util as config_util
 from library.config_util import (

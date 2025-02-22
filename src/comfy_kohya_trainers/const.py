@@ -49,6 +49,7 @@ DATASET_CONFIG_TYPE = NODE_PREFIX + "DATASET_CONFIG"
 class DreamBoothDatasetConfigDict(TypedDict):
     subsets: list[DreamBoothSubsetDict] = []
     resolution: list[int] = []
+    enable_bucket: bool = False
 
 DATASET_LOADER_TYPE = NODE_PREFIX + "DATASET_LOADER"
 DREAMBOOTH_SUBSET_CONFIG_TYPE = NODE_PREFIX + "DREAMBOOTH_SUBSET_CONFIG"

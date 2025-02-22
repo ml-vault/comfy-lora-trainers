@@ -26,6 +26,9 @@ class DreamBoothDatasetConfigNode:
                     "min": 1,
                     "max": 100,
                 }),
+                "enable_bucket": ("BOOLEAN", {
+                    "default": False,
+                }),
                 "width": ("INT", {
                     "default": 512,
                 }),

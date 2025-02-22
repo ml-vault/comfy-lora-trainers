@@ -52,7 +52,7 @@ class TrainLoraXlNode:
         )
         parser = setup_parser_sdxl()
         args = read_config_from_file(args, parser)
-        Accelerator(mixed_precision=train_config["mixed_precision"], cpu=False)
+        # Accelerator(mixed_precision=train_config["mixed_precision"], cpu=False)
         print(f"args: {args}")
         # print(f"dataset: {dataset}")
         # print(f"train_config: {train_config}")

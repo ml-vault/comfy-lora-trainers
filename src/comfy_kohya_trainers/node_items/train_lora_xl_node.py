@@ -58,9 +58,8 @@ class TrainLoraXlNode:
         # print(f"sampler_config: {sampler_config}")
         # print(f"output_config: {output_config}")
         accelerator = Accelerator()
-        with accelerator:
-            trainer = SdxlNetworkTrainer()
-            trainer.train(args)
+        trainer = SdxlNetworkTrainer()
+        trainer.train(args)
         # set_auth_config(r_token=huggingface_token, w_token=huggingface_token)
         # dset = load_dataset_for_dpack(dataset_repo_id)
         # print(f"loaded dataset: {dataset_repo_id}")

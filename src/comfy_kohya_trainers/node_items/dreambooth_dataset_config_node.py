@@ -40,7 +40,7 @@ class DreamBoothDatasetConfigNode:
         }
 
     def load_subsets(self, *_, **kwargs):
-        to_exclude_keys = ["width", "height"]
+        to_exclude_keys = ["width", "height", "enable_bucket"]
         keys_without_count = [key for key in kwargs.keys() if "count" not in key and key not in to_exclude_keys]
         values_without_count = [kwargs[key] for key in keys_without_count]
         width = kwargs["width"]
@@ -48,5 +48,6 @@ class DreamBoothDatasetConfigNode:
         return (DreamBoothDatasetConfigDict(
             subsets=values_without_count,
             resolution=[width, height],
+            enable_bucket=kwargs["enable_bucket"],
         ),)
 

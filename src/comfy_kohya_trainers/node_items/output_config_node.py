@@ -31,7 +31,9 @@ class OutputConfigNode:
         }
 
     def parse(self, *_, **kwargs):
-        parsed = OutputConfigDict( **kwargs,
+        parsed = OutputConfigDict(save_model_as=kwargs["save_model_as"],
+                                  output_dir=kwargs["output_dir"],
+                                  output_name=kwargs["output_name"],
                                   save_every_n_epochs=kwargs["save_every_n_epochs"] or None,
                                   save_every_n_steps=kwargs["save_every_n_steps"] or None,
                                   save_last_n_epochs=kwargs["save_last_n_epochs"] or None,

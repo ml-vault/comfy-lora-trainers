@@ -4,6 +4,7 @@ from ..train_lora_xl import SdxlNetworkTrainer
 from ..const import SAMPLER_CONFIG_TYPE, TRAIN_CONFIG_TYPE, OUTPUT_CONFIG_TYPE, DATASET_LOADER_TYPE, DatasetLoaderDict, TrainConfigDict
 from ..args import ClassfiedArgs
 from ..args import setup_parser_sdxl
+from accelerate import Accelerator
 
 PRECISIONS = ["fp16", "bf16"]
 
@@ -51,6 +52,7 @@ class TrainLoraXlNode:
         )
         parser = setup_parser_sdxl()
         args = read_config_from_file(args, parser)
+        Accelerator(mixed_precision=train_config["mixed_precision"], cpu=False)
         print(f"args: {args}")
         # print(f"dataset: {dataset}")
         # print(f"train_config: {train_config}")

@@ -1,7 +1,6 @@
 mlvault
 datasets
 git+https://github.com/kohya-ss/sd-scripts.git@main
-types-accelerate
 huggingface_hub >= 0.19.4
 datasets >= 2.15.0
 Pillow

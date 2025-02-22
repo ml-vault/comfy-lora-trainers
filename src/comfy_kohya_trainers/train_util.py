@@ -47,19 +47,21 @@ from diffusers.optimization import (
     TYPE_TO_SCHEDULER_FUNCTION as DIFFUSERS_TYPE_TO_SCHEDULER_FUNCTION,
 )
 from transformers.optimization import SchedulerType, TYPE_TO_SCHEDULER_FUNCTION
-from diffusers.schedulers.scheduling_euler_ancestral_discrete import EulerAncestralDiscreteScheduler
-from diffusers.models.autoencoders.autoencoder_kl import AutoencoderKL
-from diffusers.schedulers.scheduling_dpmsolver_multistep import DPMSolverMultistepScheduler
-from diffusers.schedulers.scheduling_dpmsolver_singlestep import DPMSolverSinglestepScheduler
-from diffusers.schedulers.scheduling_lms_discrete import LMSDiscreteScheduler
-from diffusers.schedulers.scheduling_pndm import PNDMScheduler
-from diffusers.schedulers.scheduling_ddim import DDIMScheduler
-from diffusers.schedulers.scheduling_euler_discrete import EulerDiscreteScheduler
-from diffusers.schedulers.scheduling_heun_discrete import HeunDiscreteScheduler
-from diffusers.schedulers.scheduling_k_dpm_2_discrete import KDPM2DiscreteScheduler
-from diffusers.schedulers.scheduling_k_dpm_2_ancestral_discrete import KDPM2AncestralDiscreteScheduler
-from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion import StableDiffusionPipeline
-from diffusers.schedulers.scheduling_ddpm import DDPMScheduler
+from diffusers import (
+    StableDiffusionPipeline,
+    DDPMScheduler,
+    EulerAncestralDiscreteScheduler,
+    DPMSolverMultistepScheduler,
+    DPMSolverSinglestepScheduler,
+    LMSDiscreteScheduler,
+    PNDMScheduler,
+    DDIMScheduler,
+    EulerDiscreteScheduler,
+    HeunDiscreteScheduler,
+    KDPM2DiscreteScheduler,
+    KDPM2AncestralDiscreteScheduler,
+    AutoencoderKL,
+)
 from library import custom_train_functions
 from library.original_unet import UNet2DConditionModel
 from huggingface_hub import hf_hub_download
@@ -106,6 +108,29 @@ STEP_DIFFUSERS_DIR_NAME = "{}-step{:08d}"
 
 IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".PNG", ".JPG", ".JPEG", ".WEBP", ".BMP"]
 
+try:
+    import pillow_avif
+
+    IMAGE_EXTENSIONS.extend([".avif", ".AVIF"])
+except:
+    pass
+
+# JPEG-XL on Linux
+try:
+    from jxlpy import JXLImagePlugin
+
+    IMAGE_EXTENSIONS.extend([".jxl", ".JXL"])
+except:
+    pass
+
+# JPEG-XL on Windows
+try:
+    import pillow_jxl
+
+    IMAGE_EXTENSIONS.extend([".jxl", ".JXL"])
+except:
+    pass
+
 IMAGE_TRANSFORMS = transforms.Compose(
     [
         transforms.ToTensor(),
@@ -123,15 +148,15 @@ class ImageInfo:
         self.caption: str = caption
         self.is_reg: bool = is_reg
         self.absolute_path: str = absolute_path
-        self.image_size: Tuple[int, int] | None = None
-        self.resized_size: Tuple[int, int] | None = None
-        self.bucket_reso: Tuple[int, int] | None = None
-        self.latents: torch.Tensor | None = None
-        self.latents_flipped: torch.Tensor | None = None
-        self.latents_npz: str | None = None
-        self.latents_original_size: Tuple[int, int] | None = None  # original image size, not latents size
-        self.latents_crop_ltrb: Tuple[int, int] | None = None  # crop left top right bottom in original pixel size, not latents size
-        self.cond_img_path: str | None = None
+        self.image_size: Tuple[int, int] = None
+        self.resized_size: Tuple[int, int] = None
+        self.bucket_reso: Tuple[int, int] = None
+        self.latents: torch.Tensor = None
+        self.latents_flipped: torch.Tensor = None
+        self.latents_npz: str = None
+        self.latents_original_size: Tuple[int, int] = None  # original image size, not latents size
+        self.latents_crop_ltrb: Tuple[int, int] = None  # crop left top right bottom in original pixel size, not latents size
+        self.cond_img_path: str = None
         self.image: Optional[Image.Image] = None  # optional, original PIL Image
         # SDXL, optional
         self.text_encoder_outputs_npz: Optional[str] = None
@@ -600,7 +625,7 @@ class BaseDataset(torch.utils.data.Dataset):
         self.token_strings = None
 
         self.enable_bucket = False
-        self.bucket_manager: BucketManager | None = None  # not initialized
+        self.bucket_manager: BucketManager = None  # not initialized
         self.min_bucket_reso = None
         self.max_bucket_reso = None
         self.bucket_reso_steps = None
@@ -4621,19 +4646,19 @@ def prepare_accelerator(args: argparse.Namespace):
     return accelerator
 
 
-def prepare_dtype(mixed_precision: Literal["fp16", "bf16"], save_precision: Literal["fp16", "bf16", "float"]):
+def prepare_dtype(args: argparse.Namespace):
     weight_dtype = torch.float32
-    if mixed_precision == "fp16":
+    if args.mixed_precision == "fp16":
         weight_dtype = torch.float16
-    elif mixed_precision == "bf16":
+    elif args.mixed_precision == "bf16":
         weight_dtype = torch.bfloat16
 
     save_dtype = None
-    if save_precision == "fp16":
+    if args.save_precision == "fp16":
         save_dtype = torch.float16
-    elif save_precision == "bf16":
+    elif args.save_precision == "bf16":
         save_dtype = torch.bfloat16
-    elif save_precision == "float":
+    elif args.save_precision == "float":
         save_dtype = torch.float32
 
     return weight_dtype, save_dtype

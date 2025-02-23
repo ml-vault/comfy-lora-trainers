@@ -6,7 +6,7 @@ from venv import logger
 from library.train_util import read_config_from_file
 import toml
 from ..train_lora_xl import SdxlNetworkTrainer
-from ..const import SAMPLER_CONFIG_TYPE, TRAIN_CONFIG_TYPE, OUTPUT_CONFIG_TYPE, DATASET_LOADER_TYPE, DatasetLoaderDict, TrainConfigDict
+from ..const import SAMPLER_CONFIG_TYPE, TRAIN_CONFIG_TYPE, OUTPUT_CONFIG_TYPE, DATASET_LOADER_TYPE, DatasetLoaderDict, TrainConfigDict, SamplerConfigDict
 from ..args import ClassfiedArgs
 from ..args import setup_parser_sdxl
 from accelerate import Accelerator
@@ -85,7 +85,7 @@ class TrainLoraXlNode:
                       output_dir: str,
                       dataset: DatasetLoaderDict,
                       train_config: TrainConfigDict,
-                      sampler_config,
+                      sampler_config: SamplerConfigDict,
                       output_config,
                      ):
 
@@ -94,14 +94,19 @@ class TrainLoraXlNode:
         output_dir = os.path.join(output_dir, model_name) if output_dir.startswith("/") else os.path.join(compfy_root, output_dir, model_name)
         os.makedirs(output_dir, exist_ok=True)
         output_name = model_name
+
+        # Sample config
         sample_prompts = sampler_config["sample_prompts"]
+        print(f"sample_prompts: {sample_prompts}")
+        sample_configs = {key: value for key, value in sampler_config.items() if key not in ["sample_prompts"]}
         sample_prompts_path = os.path.join(output_dir, "sample_prompts.txt")
         with open(sample_prompts_path, "w") as f:
             f.write(sample_prompts)
+
         sampler_config["sample_prompts"] = sample_prompts_path
         args = ClassfiedArgs(
             **train_config,
-            **sampler_config,
+            **sample_configs,
             **output_config,
             output_dir=output_dir,
             output_name=output_name,

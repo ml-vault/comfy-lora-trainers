@@ -74,3 +74,9 @@ class OutputConfigDict(TypedDict):
     output_name: str
     save_last_n_epochs: int | None
     save_last_n_steps: int | None
+
+class SamplerConfigDict(TypedDict):
+    sample_sampler: str
+    sample_prompts: str
+    sample_every_n_epochs: int
+    sample_every_n_steps: int

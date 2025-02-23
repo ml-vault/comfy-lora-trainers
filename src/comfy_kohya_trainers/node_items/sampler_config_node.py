@@ -1,4 +1,4 @@
-from ..const import SAMPLER_CONFIG_TYPE
+from ..const import SAMPLER_CONFIG_TYPE, SamplerConfigDict
 
 SAMPLERS = ['ddim', 'pndm', 'lms', 'euler', 'euler_a', 'heun', 'dpm_2', 'dpm_2_a', 'dpmsolver', 'dpmsolver++', 'dpmsingle', 'k_lms', 'k_euler', 'k_euler_a', 'k_dpm_2', 'k_dpm_2_a',]
 
@@ -38,4 +38,4 @@ class SamplerConfigNode:
         }
 
     def parse(self, sampler: str, prompts: str, sample_every_n_epochs: int, sample_every_n_steps: int):
-        return ({"sample_sampler": sampler, "sample_prompts": prompts, "sample_every_n_epochs": sample_every_n_epochs, "sample_every_n_steps": sample_every_n_steps},)
+        return (SamplerConfigDict(sample_sampler=sampler, sample_prompts=prompts, sample_every_n_epochs=sample_every_n_epochs, sample_every_n_steps=sample_every_n_steps),)

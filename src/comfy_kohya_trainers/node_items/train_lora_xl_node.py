@@ -103,10 +103,10 @@ class TrainLoraXlNode:
         with open(sample_prompts_path, "w") as f:
             f.write(sample_prompts)
 
-        sampler_config["sample_prompts"] = sample_prompts_path
         args = ClassfiedArgs(
             **train_config,
             **sample_configs,
+            sample_prompts=sample_prompts_path,
             **output_config,
             output_dir=output_dir,
             output_name=output_name,

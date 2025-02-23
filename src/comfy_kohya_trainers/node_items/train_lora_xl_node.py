@@ -124,7 +124,7 @@ class TrainLoraXlNode:
 
         # Accelerator(mixed_precision=train_config["mixed_precision"], cpu=False)
         print(f"args: {args}")
-        cmd = f"accelerate launch --mixed_precision {train_config['mixed_precision']} {kohya_repo_dir}/train_network.py --config_file {config_path} "
+        cmd = f"accelerate launch --mixed_precision {train_config['mixed_precision']} {kohya_repo_dir}/sdxl_train_network.py --config_file {config_path} "
         run_cli(cmd)
 
         return ("a", )

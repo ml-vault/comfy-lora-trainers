@@ -23,6 +23,8 @@ class TrainConfigDict(TypedDict):
     max_train_steps: int
     no_half_vae: bool
     gradient_checkpointing: bool
+    network_dim: int
+    network_alpha: int
 
 OUTPUT_CONFIG_TYPE = NODE_PREFIX + "OUTPUT_CONFIG"
 

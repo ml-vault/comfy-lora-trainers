@@ -63,6 +63,14 @@ class TrainConfigNode:
                     "default": False,
                     "tooltip": "Gradient checkpointing"
                 }),
+                "network_dim": ("INT", {
+                    "default": 4,
+                    "tooltip": "Network dim"
+                }),
+                "network_alpha": ("INT", {
+                    "default": 32,
+                    "tooltip": "Network alpha"
+                }),
             },
             "optional": {
                 "optimizer": (OPTIMIZER_CONFIG_TYPE, {
@@ -94,9 +102,13 @@ class TrainConfigNode:
               cache_latents: bool,
               no_half_vae: bool,
               gradient_checkpointing: bool,
+              network_dim: int,
+              network_alpha: int,
               optimizer,
             ):
         return (TrainConfigDict(
+            network_dim=network_dim,
+            network_alpha=network_alpha,
             pretrained_model_name_or_path=checkpoint,
             network_weights=lora or None,
             xformers=xformers if xformers else None,

@@ -100,7 +100,7 @@ class TrainLoraXlNode:
         print(f"sample_prompts: {sample_prompts}")
         sample_configs = {key: value for key, value in sampler_config.items() if key not in ["sample_prompts"]}
         sample_prompts_path = os.path.join(output_dir, "sample_prompts.txt")
-        with open(sample_prompts_path, "w") as f:
+        with open(sample_prompts_path, "w", encoding="utf-8") as f:
             f.write(sample_prompts)
 
         args = ClassfiedArgs(
@@ -108,6 +108,7 @@ class TrainLoraXlNode:
             **sample_configs,
             sample_prompts=sample_prompts_path,
             **output_config,
+            huggingface_path_in_repo=model_name,
             output_dir=output_dir,
             output_name=output_name,
             network_module="networks.lora",

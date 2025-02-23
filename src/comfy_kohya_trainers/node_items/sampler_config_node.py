@@ -38,4 +38,4 @@ class SamplerConfigNode:
         }
 
     def parse(self, sampler: str, prompts: str, sample_every_n_epochs: int, sample_every_n_steps: int):
-        return ({"sampler": sampler, "prompts": prompts, "sample_every_n_epochs": sample_every_n_epochs, "sample_every_n_steps": sample_every_n_steps},)
+        return ({"sample_sampler": sampler, "sample_prompts": prompts, "sample_every_n_epochs": sample_every_n_epochs, "sample_every_n_steps": sample_every_n_steps},)

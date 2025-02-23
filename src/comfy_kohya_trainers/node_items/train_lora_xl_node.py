@@ -109,6 +109,8 @@ class TrainLoraXlNode:
             dataset_config=dataset['dataset_config']
         )
 
+        config_path = f"{output_dir}/configs.toml"
+
         # check if kohya-main exists
         if not os.path.exists(kohya_repo_dir):
             #clone kohya-main
@@ -117,7 +119,6 @@ class TrainLoraXlNode:
         parser = setup_parser_sdxl()
         args = read_config_from_file(args, parser)
 
-        config_path = f"{os.getcwd()}/argstest.toml"
 
         # convert args to dictionary
         args_dict = vars(args)

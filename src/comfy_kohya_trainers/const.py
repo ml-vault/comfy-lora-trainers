@@ -21,6 +21,7 @@ class TrainConfigDict(TypedDict):
     prior_loss_weight: float
     max_train_epochs: int
     max_train_steps: int
+    no_half_vae: bool
 
 OUTPUT_CONFIG_TYPE = NODE_PREFIX + "OUTPUT_CONFIG"
 

@@ -55,6 +55,10 @@ class TrainConfigNode:
                     "default": False,
                     "tooltip": "Cache latents"
                 }),
+                "no_half_vae": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "No half vae"
+                }),
             },
             "optional": {
                 "optimizer": (OPTIMIZER_CONFIG_TYPE, {
@@ -84,6 +88,7 @@ class TrainConfigNode:
               max_train_epochs: int,
               max_train_steps: int,
               cache_latents: bool,
+              no_half_vae: bool,
               optimizer,
             ):
         return (TrainConfigDict(
@@ -97,8 +102,9 @@ class TrainConfigNode:
             prior_loss_weight=prior_loss_weight,
             max_train_epochs=max_train_epochs,
             max_train_steps=max_train_steps,
-            cache_latents=cache_latents,
             **optimizer,
+            cache_latents=cache_latents,
+            no_half_vae=no_half_vae,
         ),)
 
 

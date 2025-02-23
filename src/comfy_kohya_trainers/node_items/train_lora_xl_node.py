@@ -78,6 +78,8 @@ class TrainLoraXlNode:
                      ):
         args = ClassfiedArgs(
             **train_config,
+            **sampler_config,
+            **output_config,
             network_module="networks.lora",
             dataset_config=dataset['dataset_config']
         )

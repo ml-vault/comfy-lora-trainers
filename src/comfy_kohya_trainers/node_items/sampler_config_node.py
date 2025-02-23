@@ -24,10 +24,6 @@ class SamplerConfigNode:
                     "multiline": True,
                     "label": "Prompts"
                 }),
-                "output_dir": ("STRING", {
-                    "tooltip": "Output directory",
-                    "default": "output"
-                }),
             },
             "optional": {
                 "sample_every_n_epochs": ("INT", {
@@ -41,5 +37,5 @@ class SamplerConfigNode:
             }
         }
 
-    def parse(self, sampler: str, prompts: str, output_dir: str, sample_every_n_epochs: int, sample_every_n_steps: int):
-        return ({"sampler": sampler, "prompts": prompts, "output_dir": output_dir, "sample_every_n_epochs": sample_every_n_epochs, "sample_every_n_steps": sample_every_n_steps},)
+    def parse(self, sampler: str, prompts: str, sample_every_n_epochs: int, sample_every_n_steps: int):
+        return ({"sampler": sampler, "prompts": prompts, "sample_every_n_epochs": sample_every_n_epochs, "sample_every_n_steps": sample_every_n_steps},)

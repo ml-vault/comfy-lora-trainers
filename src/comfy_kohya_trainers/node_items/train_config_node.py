@@ -59,6 +59,10 @@ class TrainConfigNode:
                     "default": False,
                     "tooltip": "No half vae"
                 }),
+                "gradient_checkpointing": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "Gradient checkpointing"
+                }),
             },
             "optional": {
                 "optimizer": (OPTIMIZER_CONFIG_TYPE, {
@@ -89,6 +93,7 @@ class TrainConfigNode:
               max_train_steps: int,
               cache_latents: bool,
               no_half_vae: bool,
+              gradient_checkpointing: bool,
               optimizer,
             ):
         return (TrainConfigDict(
@@ -105,6 +110,7 @@ class TrainConfigNode:
             **optimizer,
             cache_latents=cache_latents,
             no_half_vae=no_half_vae,
+            gradient_checkpointing=gradient_checkpointing,
         ),)
 
 

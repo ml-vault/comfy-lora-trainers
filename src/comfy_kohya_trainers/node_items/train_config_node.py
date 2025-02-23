@@ -71,6 +71,14 @@ class TrainConfigNode:
                     "default": 32,
                     "tooltip": "Network alpha"
                 }),
+                "v2": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "V2"
+                }),
+                "v_parameterization": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "V parameterization"
+                }),
             },
             "optional": {
                 "optimizer": (OPTIMIZER_CONFIG_TYPE, {
@@ -105,6 +113,8 @@ class TrainConfigNode:
               network_dim: int,
               network_alpha: int,
               optimizer,
+              v2: bool,
+              v_parameterization: bool,
             ):
         return (TrainConfigDict(
             network_dim=network_dim,
@@ -123,6 +133,8 @@ class TrainConfigNode:
             cache_latents=cache_latents,
             no_half_vae=no_half_vae,
             gradient_checkpointing=gradient_checkpointing,
+            v2=v2,
+            v_parameterization=v_parameterization,
         ),)
 
 

@@ -25,6 +25,8 @@ class TrainConfigDict(TypedDict):
     gradient_checkpointing: bool
     network_dim: int
     network_alpha: int
+    v2: bool
+    v_parameterization: bool
 
 OUTPUT_CONFIG_TYPE = NODE_PREFIX + "OUTPUT_CONFIG"
 

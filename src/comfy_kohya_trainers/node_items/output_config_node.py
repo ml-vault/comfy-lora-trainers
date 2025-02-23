@@ -11,8 +11,8 @@ class OutputConfigNode:
         return {
             "required": {
                 "save_model_as": ("STRING", {"default": "safetensors"}),
-                "output_dir": ("STRING", {"default": "output/train"}),
-                "output_name": ("STRING", {"default": "output/train"}),
+                # "output_dir": ("STRING", {"default": "output/train"}),
+                # "output_name": ("STRING", {"default": "output/train"}),
             },
             "optional": {
                 "save_every_n_epochs": ("INT", {"default": 1, "step": 1}),
@@ -32,8 +32,6 @@ class OutputConfigNode:
 
     def parse(self, *_, **kwargs):
         parsed = OutputConfigDict(save_model_as=kwargs["save_model_as"],
-                                  output_dir=kwargs["output_dir"],
-                                  output_name=kwargs["output_name"],
                                   save_every_n_epochs=kwargs["save_every_n_epochs"] or None,
                                   save_every_n_steps=kwargs["save_every_n_steps"] or None,
                                   save_last_n_epochs=kwargs["save_last_n_epochs"] or None,

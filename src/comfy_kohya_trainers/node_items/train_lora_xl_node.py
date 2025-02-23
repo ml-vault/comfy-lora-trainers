@@ -13,6 +13,10 @@ from accelerate import Accelerator
 import os
 
 PRECISIONS = ["fp16", "bf16"]
+file_dir = os.path.dirname(os.path.abspath(__file__))
+node_root = file_dir.rsplit("/", 3)[0]
+kohya_repo_dir = os.path.join(node_root, "oss", "kohya-main")
+compfy_root = node_root.rsplit("/", 2)[0]
 
 def run_cli(command: str):
     import subprocess
@@ -59,6 +63,12 @@ class TrainLoraXlNode:
                 "output_config": (OUTPUT_CONFIG_TYPE, {
                     "tooltip": "Output config"
                 }),
+                "model_name": ("STRING", {
+                    "tooltip": "Model name"
+                }),
+                "output_dir": ("STRING", {
+                    "tooltip": "Output directory"
+                }),
             },
         }
 
@@ -71,22 +81,34 @@ class TrainLoraXlNode:
     CATEGORY = "Example"
 
     def train_lora_xl(self,
+                      model_name: str,
+                      output_dir: str,
                       dataset: DatasetLoaderDict,
                       train_config: TrainConfigDict,
                       sampler_config,
                       output_config,
                      ):
+
+        # Write sample prompts to file
+
+        output_dir = os.path.join(output_dir, model_name) if output_dir.startswith("/") else os.path.join(compfy_root, output_dir, model_name)
+        os.makedirs(output_dir, exist_ok=True)
+        output_name = model_name
+        sample_prompts = sampler_config["sample_prompts"]
+        sample_prompts_path = os.path.join(output_dir, "sample_prompts.txt")
+        with open(sample_prompts_path, "w") as f:
+            f.write(sample_prompts)
+        sampler_config["sample_prompts"] = sample_prompts_path
         args = ClassfiedArgs(
             **train_config,
             **sampler_config,
             **output_config,
+            output_dir=output_dir,
+            output_name=output_name,
             network_module="networks.lora",
             dataset_config=dataset['dataset_config']
         )
 
-        file_dir = os.path.dirname(os.path.abspath(__file__))
-        node_root = file_dir.rsplit("/", 3)[0]
-        kohya_repo_dir = os.path.join(node_root, "oss", "kohya-main")
         # check if kohya-main exists
         if not os.path.exists(kohya_repo_dir):
             #clone kohya-main

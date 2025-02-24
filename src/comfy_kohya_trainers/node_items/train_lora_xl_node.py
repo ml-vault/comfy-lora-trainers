@@ -34,10 +34,7 @@ def run_cli(command: str):
         bufsize=1,
         env={
             **os.environ,
-            "NCCL_DEBUG": "INFO",
-            # "NCCL_IB_DISABLE": "1",
             "NCCL_SOCKET_IFNAME": "eth0",
-            "NCCL_P2P_LEVEL": "SYS",
             "NCCL_BLOCKING_WAIT": "1",
             "NCCL_ASYNC_ERROR_HANDLING": "1",
         }

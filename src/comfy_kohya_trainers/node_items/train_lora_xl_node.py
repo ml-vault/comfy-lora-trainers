@@ -74,6 +74,7 @@ class TrainLoraXlNode:
                     "default": False
                 }),
                 "num_processes": ("INT", {
+                    "min": 0,
                     "tooltip": "Number of processes, if 0, follows config"
                 }),
             },
@@ -165,7 +166,7 @@ class TrainLoraXlNode:
         # Accelerator(mixed_precision=train_config["mixed_precision"], cpu=False)
         print(f"args: {args}")
         multi_gpu_flag = "--multi_gpu" if multi_gpu else ""
-        num_processes_flag = f"--num_processes {num_processes}" if num_processes > 1 else ""
+        num_processes_flag = f"--num_processes {num_processes}" if num_processes > 0 else ""
         cmd = f"accelerate launch --mixed_precision {train_config['mixed_precision']} {multi_gpu_flag} {num_processes_flag} {kohya_repo_dir}/sdxl_train_network.py --config_file {config_path} "
         run_cli(cmd)
 

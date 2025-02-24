@@ -31,7 +31,16 @@ def run_cli(command: str):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,  # 標準エラーも標準出力にマージ
         text=True,
-        bufsize=1
+        bufsize=1,
+        env={
+            **os.environ,
+            "NCCL_DEBUG": "INFO",
+            "NCCL_IB_DISABLE": "1",
+            "NCCL_SOCKET_IFNAME": "enp1s0",
+            "NCCL_P2P_LEVEL": "NVL",
+            "NCCL_BLOCKING_WAIT": "1",
+            "NCCL_ASYNC_ERROR_HANDLING": "1",
+        }
     )
 
     # 標準出力をリアルタイムで読み取る

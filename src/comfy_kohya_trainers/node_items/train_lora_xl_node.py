@@ -36,7 +36,7 @@ def run_cli(command: str):
             **os.environ,
             "NCCL_DEBUG": "INFO",
             "NCCL_IB_DISABLE": "1",
-            "NCCL_SOCKET_IFNAME": "enp1s0",
+            "NCCL_SOCKET_IFNAME": "eth0",
             "NCCL_P2P_LEVEL": "NVL",
             "NCCL_BLOCKING_WAIT": "1",
             "NCCL_ASYNC_ERROR_HANDLING": "1",

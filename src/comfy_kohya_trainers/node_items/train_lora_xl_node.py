@@ -86,6 +86,14 @@ class TrainLoraXlNode:
                     "min": 0,
                     "tooltip": "Number of processes, if 0, follows config"
                 }),
+                "persistent_data_loader_workers": ("BOOLEAN", {
+                    "tooltip": "Persistent data loader workers",
+                    "default": False
+                }),
+                "cache_latents_to_disk": ("BOOLEAN", {
+                    "tooltip": "Cache latents to disk",
+                    "default": False
+                }),
             },
         }
 
@@ -106,6 +114,8 @@ class TrainLoraXlNode:
                       output_config,
                       multi_gpu: bool,
                       num_processes: int,
+                      persistent_data_loader_workers: bool,
+                      cache_latents_to_disk: bool,
                      ):
 
         # Write sample prompts to file
@@ -131,7 +141,9 @@ class TrainLoraXlNode:
             output_dir=output_dir,
             output_name=output_name,
             network_module="networks.lora",
-            dataset_config=dataset['dataset_config']
+            dataset_config=dataset['dataset_config'],
+            persistent_data_loader_workers=persistent_data_loader_workers,
+            cache_latents_to_disk=cache_latents_to_disk,
         )
 
         config_path = f"{output_dir}/configs.toml"

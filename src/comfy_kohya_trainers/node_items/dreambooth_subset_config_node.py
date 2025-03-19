@@ -42,6 +42,9 @@ class DreamBoothSubsetConfigNode:
                 "keep_tokens": ("INT", {
                     "default": 0,
                 }),
+                "shuffle_caption": ("BOOLEAN", {
+                    "default": False,
+                }),
                 "color_aug": ("BOOLEAN", {
                     "default": False,
                 }),
